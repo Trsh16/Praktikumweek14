@@ -44,7 +44,7 @@ namespace Praktikum14
             PosisiSekarang = Posisi;
             teamidsekarang = dtTeam.Rows[Posisi][3].ToString();
             DataTable dtPlayer = new DataTable();
-            sqlQuery = "SELECT m.match_date , 'HOME' , t.team_name as `Lawan`, concat(m.goal_home, ' - ', m.goal_away) as 'SCORE'FROM `match` m , team t WHERE m.team_away = t.team_id AND m.team_home = '" + teamidsekarang + "'union SELECT m.match_date , 'AWAY' , t.team_name as `Lawan` , concat(m.goal_home, ' - ', m.goal_away) as 'SCORE'FROM `match` m , team t WHERE m.team_home = t.team_id AND m.team_away = '" + teamidsekarang + "' order by 1 desc limit 5;";
+            sqlQuery = "SELECT m.match_date , 'HOME' , t.team_name as `Lawan`, concat(m.goal_home, ' - ', m.goal_away) as 'SCORE'FROM `match` m , team t WHERE m.team_away = t.team_id AND m.team_home = '" + teamidsekarang + "' union SELECT m.match_date , 'AWAY' , t.team_name as `Lawan` , concat(m.goal_home, ' - ', m.goal_away) as 'SCORE'FROM `match` m , team t WHERE m.team_home = t.team_id AND m.team_away = '" + teamidsekarang + "' order by 1 desc limit 5;";
             sqlCommand = new MySqlCommand(sqlQuery, sqlConnect);
             sqlAdapter = new MySqlDataAdapter(sqlCommand);
             sqlAdapter.Fill(dtPlayer);
@@ -58,7 +58,7 @@ namespace Praktikum14
             label_topscorer.Text = dtTopScorer.Rows[0][0].ToString();
 
             dtWorstDisipline = new DataTable();
-            sqlQuery = "SELECT concat(p.player_name, ', ', concat(sum(if (d.type = 'CY', 1, 0)), ' Yellow Card and ', sum(if (d.type = 'CR', 1, 0)), ' Red Card')) as 'Worst Disipline', sum(if (d.type = 'CY', 1,0)) +sum(if (d.type = 'CR', 1, 0)) from player p, dmatch d where p.player_id = d.player_id and p.team_id = '"+teamidsekarang+"' group by p.player_id order by 2 desc; ";
+            sqlQuery = "SELECT concat(p.player_name, ', ', concat(sum(if (d.type = 'CY', 1, 0)), ' Yellow Card and ', sum(if (d.type = 'CR', 1, 0)), ' Red Card')) as 'Worst Disipline', sum(if (d.type = 'CY', 1,0)) + sum(if (d.type = 'CR', 1, 0)) from player p, dmatch d where p.player_id = d.player_id and p.team_id = '"+teamidsekarang+"' group by p.player_id order by 2 desc; ";
             sqlCommand = new MySqlCommand(sqlQuery, sqlConnect);
             sqlAdapter = new MySqlDataAdapter(sqlCommand);
             sqlAdapter.Fill(dtWorstDisipline);
