@@ -58,7 +58,7 @@ namespace Praktikum14
             label_topscorer.Text = dtTopScorer.Rows[0][0].ToString();
 
             dtWorstDisipline = new DataTable();
-            sqlQuery = "select nationality_id, nation from nationality";
+            sqlQuery = "SELECT concat(p.player_name, ', ', concat(sum(if (d.type = 'CY', 1, 0)), ' Yellow Card and ', sum(if (d.type = 'CR', 1, 0)), ' Red Card')) as 'Worst Disipline', sum(if (d.type = 'CY', 1,0)) +sum(if (d.type = 'CR', 1, 0)) from player p, dmatch d where p.player_id = d.player_id and p.team_id = '"+teamidsekarang+"' group by p.player_id order by 2 desc; ";
             sqlCommand = new MySqlCommand(sqlQuery, sqlConnect);
             sqlAdapter = new MySqlDataAdapter(sqlCommand);
             sqlAdapter.Fill(dtWorstDisipline);
